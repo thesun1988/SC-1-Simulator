@@ -4,6 +4,7 @@
 
 /* 
 	alu_model.c
+	Programmer: Nabil S., Nhat T.
 	Programmer: George Mobus
 	Date: 1-22-2015
 	Description:
