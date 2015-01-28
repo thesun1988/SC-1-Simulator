@@ -1,8 +1,8 @@
 /*
-	alu_model.h 
-Programmer: George Mobus
-
-*/
+ alu_model.h
+ Programmer: George Mobus
+ 
+ */
 
 // Register ADT
 typedef unsigned short Register;
@@ -60,10 +60,14 @@ typedef struct alu {
 	unsigned char flags;	// n, z, c, o - low order nybble
 } ALU;
 
-typedef ALU * ALU_p;	
+typedef ALU * ALU_p;
 
 ALU_p createALU (void);
 void clearALU (ALU_p);	// clears registers and flags
 void performOperation (ALU_p, int);
 void setALU_Flags (ALU_p, unsigned);
 void add(ALU_p);
+void sub(ALU_p);
+void mul(ALU_p);
+void div(ALU_p);
+void andop(ALU_p);

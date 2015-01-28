@@ -2,19 +2,19 @@
 #include <stdlib.h>
 #include "alu_model.h"
 
-/* 
-	alu_model.c
-	Programmer: Nabil S., Nhat T.
-	Programmer: George Mobus
-	Date: 1-22-2015
-	Description:
-		This program provides example code for creating register objects and a register file. These two objects
-	can be instantiated either on the stack ("raw") or on the heap (i.e. constructed). Several methods (OO-style 
-	functions) are given to show how to write them in object-oriented style in C. Note that when an object is 
-	instantiated in the heap the first argument passed in a method is always the pointer to the specific object.
-	That pointer is actually the 'this' reference in Java, where it is implied in Java it is explicit in C.
-	The main() test driver also shows how data conversions from unsigned to signed work.
-*/
+/*
+ alu_model.c
+ 
+ Programmer: George Mobus
+ Date: 1-22-2015
+ Description:
+ This program provides example code for creating register objects and a registe r file. These twoobjects
+ can be instantiated either on the stack ("raw") or on the heap (i.e. constructed). Several methods (OO-style
+ functions) are given to show how to write them in object-oriented style in C. Note that when an object is
+ instantiated in the heap the first argument passed in a method is always the pointer to the specific object.
+ That pointer is actually the 'this' reference in Java, where it is implied in Java it is explicit in C.
+ The main() test driver also shows how data conversions from unsigned to signed work.
+ */
 
 // Register methods
 Register_p createRegister (void) {
@@ -27,7 +27,7 @@ int getSignedValue (Register_p r) {
 }
 
 void putUnsignedValue (Register_p r, int v) {
-	*r = (unsigned short) v & 0x00FF; 
+	*r = (unsigned short) v & 0x00FF;
 }
 
 // RegisterFile Methods
@@ -65,13 +65,13 @@ void setALU_Registers (ALU_p alu, Register opnd1, Register opnd2) {
 }
 
 void performOperation (ALU_p alu, int op) {
-
+    
 	switch (op) {
 		case ADD: {add(alu); break;}
-		case SUB:
-		case MUL:
-		case DIV:
-		case AND:
+		case SUB: {sub(alu); break;}
+		case MUL: {mul(alu); break;}
+		case DIV: {div(alu); break;}
+		case AND: {andop(alu); break;}
 		case OR:
 		case NOT:
 		case XOR:
@@ -79,7 +79,7 @@ void performOperation (ALU_p alu, int op) {
 		case SHR:
 		default: return;	// set machine exception
 	}
-
+    
 }
 
 void setALU_Flags (ALU_p alu, unsigned result) {
@@ -93,7 +93,7 @@ void setALU_Flags (ALU_p alu, unsigned result) {
 	else if (sign_R) alu->flags |= NEGATIVE_SET;		// set negative flag
 	else if (alu->R == 0) alu->flags |= ZERO_SET;
 	else if (result > 32767) alu->flags |= CARRY_SET;
-
+    
 }
 
 void add(ALU_p alu) {
@@ -103,6 +103,37 @@ void add(ALU_p alu) {
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
+
+void sub(ALU_p alu) {
+	unsigned opnd1 = (unsigned) alu->A;
+	unsigned opnd2 = (unsigned) alu->B;
+	unsigned result = (unsigned) opnd1 - (unsigned) opnd2;	// sub two integers to check overflow, etc.
+	setALU_Flags(alu, result);
+	alu->R = result & LOW_ORDER_WORD_MASK;
+}
+
+void mul(ALU_p alu) {
+	unsigned opnd1 = (unsigned) alu->A;
+	unsigned opnd2 = (unsigned) alu->B;
+	unsigned result = (unsigned) opnd1 * (unsigned) opnd2;	// multiple two integers to check overflow, etc.
+	setALU_Flags(alu, result);
+	alu->R = result & LOW_ORDER_WORD_MASK;
+}
+void div(ALU_p alu) {
+	unsigned opnd1 = (unsigned) alu->A;
+	unsigned opnd2 = (unsigned) alu->B;
+	unsigned result = (unsigned) opnd1 / (unsigned) opnd2;	// divivde two integers to check overflow, etc.
+	setALU_Flags(alu, result);
+	alu->R = result & LOW_ORDER_WORD_MASK;
+}
+void andop(ALU_p alu) {
+	unsigned opnd1 = (unsigned) alu->A;
+	unsigned opnd2 = (unsigned) alu->B;
+	unsigned result = (unsigned) opnd1 & (unsigned) opnd2;	// and operation two integers to check overflow, etc.
+	setALU_Flags(alu, result);
+	alu->R = result & LOW_ORDER_WORD_MASK;
+}
+
 
 int main () {
 	int dest, op1, op2, sel;			// register addresses
@@ -127,7 +158,7 @@ int main () {
 	scanf("%d", &sel);
 	printf("\n");
 	alu_p->A = *rf[op1];
-	printf("Register R%d contains value: 0x%04X\n", op1, getContentRegister (rf, op1));
+	//printf("Register R%d contains value: 0x%04X\n", op1, getContentRegister (rf, op1));
 	alu_p->B = *rf[op2];
 	performOperation (alu_p, sel);
 	printf("Register A = 0x%04X\n", alu_p->A);
@@ -135,3 +166,4 @@ int main () {
 	printf("Register R = 0x%04X\n", alu_p->R);
 	getchar();
 }
+
