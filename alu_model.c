@@ -6,6 +6,7 @@
  alu_model.c
  
  Programmer: George Mobus
+ Programmer: Nabil Sujipto, Nhat Tran
  Date: 1-22-2015
  Description:
  This program provides example code for creating register objects and a registe r file. These twoobjects
@@ -134,6 +135,69 @@ void andop(ALU_p alu) {
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
 
+/**
+* alu_or(ALU_p alu)
+* performs the following operation alu->A | alu->B
+* return the result
+*/
+void alu_or(ALU_p alu) {
+	unsigned opnd1 = (unsigned) alu->A;
+	unsigned opnd2 = (unsigned) alu->B;
+	unsigned result = (unsigned) opnd1 | (unsigned) opnd2;
+	setALU_Flags(alu, result);
+	alu->R = result & LOW_ORDER_WORD_MASK;
+}
+
+/**
+* alu_onot(ALU_p alu)
+* performs the following operation ~alu->A
+* return the result
+*/
+void alu_not(ALU_p) {
+	unsigned opnd1 = (unsigned) alu->A;
+	unsigned opnd2 = (unsigned) alu->B;
+	unsigned result = ~(unsigned) opnd1;
+	setALU_Flags(alu, result);
+	alu->R = result & LOW_ORDER_WORD_MASK;
+}
+
+/**
+* alu_xor(ALU_p alu)
+* performs the following operation alu->A ^ alu->B
+* return the result
+*/
+void alu_xor(ALU_p) {
+	unsigned opnd1 = (unsigned) alu->A;
+	unsigned opnd2 = (unsigned) alu->B;
+	unsigned result = (unsigned) opnd1 ^ (unsigned) opnd2;
+	setALU_Flags(alu, result);
+	alu->R = result & LOW_ORDER_WORD_MASK;
+}
+
+/**
+* alu_shl(ALU_p alu)
+* performs the following operation alu->A <<< 16
+* return the result
+*/
+void alu_shl(ALU_P) {
+	unsigned opnd1 = (unsigned) alu->A;
+	unsigned result = (unsigned) opnd1 <<< 16;
+	setALU_Flags(alu, result);
+	alu->R = result & LOW_ORDER_WORD_MASK;
+}
+
+/**
+* alu_shr(ALU_p alu)
+* performs the following operation alu->A >>> 16
+* return the result
+*/
+void alu_shr(ALU_p) {
+	unsigned opnd1 = (unsigned) alu->A;
+	unsigned result = (unsigned) opnd1 >>> 16;
+	setALU_Flags(alu, result);
+	alu->R = result & LOW_ORDER_WORD_MASK;
+}
+
 
 int main () {
 	int dest, op1, op2, sel;			// register addresses
@@ -154,7 +218,7 @@ int main () {
 	printf("\nEnter value for operand 2 [up to 32768]: ");
 	scanf("%d", rf[op2]);
 	printf("Enter the number of the operation\n");
-	printf("0 ADD, 1 SUB, 2 MUL, 3 DIV, 4 AND, 5 OR, 6 NOT, 7 XOR, 8 SHL, 9 SHR: ");
+	printf("0 ADD, 1 SUB, 2 MUL, 3 DIV, 4 AND, 5 OR, 6 NOT, 7 XOR, 8 SHL, 9 SHR: "); //picks operation
 	scanf("%d", &sel);
 	printf("\n");
 	alu_p->A = *rf[op1];

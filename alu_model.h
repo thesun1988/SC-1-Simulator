@@ -71,3 +71,8 @@ void sub(ALU_p);
 void mul(ALU_p);
 void div(ALU_p);
 void andop(ALU_p);
+void alu_or(ALU_p);
+void alu_not(ALU_p);
+void alu_xor(ALU_p);
+void alu_shl(ALU_P);
+void alu_shr(ALU_p);
