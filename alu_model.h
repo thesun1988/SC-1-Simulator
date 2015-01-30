@@ -29,7 +29,6 @@ typedef struct registerFile {
 	Register r0,r1,r2,r3,r4,r5,r6,r7;
 } RegisterFile;
 
-typedef Register RegisterFile[REGISTER_FILE_SIZE];
 typedef RegisterFile * RegisterFile_p;
 
 RegisterFile_p createRegisterFile (void);	// constructor

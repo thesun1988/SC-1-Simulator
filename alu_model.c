@@ -237,7 +237,6 @@ int main () {
 	int dest, op1, op2, sel;			// register addresses
 	
 	RegisterFile_p rf = createRegisterFile();
-	int i;
 
 	clearRegisterFile(rf);
 	
