@@ -68,12 +68,12 @@ Register getRegisterValue (RegisterFile_p rf, int which) {
 		case R6: {r = rf->r6; break;}
 		case R7: {r = rf->r7; break;}
 	}
-	return r;
+    return r;
 }
 
 void printRegisterFile (RegisterFile_p rf) {
 	int i;
-	for (i=0; i<REGISTER_FILE_SIZE; i++) printf("register R%d content: %04X\n", i, 
+	for (i=0; i<REGISTER_FILE_SIZE; i++) printf("Register R%d content: %04X\n", i,
 		getRegisterValue(rf, i));
 }
 
@@ -131,7 +131,11 @@ void setALU_Flags (ALU_p alu, unsigned result) {
 	else if (result > 32767) alu->flags |= CARRY_SET;
     
 }
-
+/**
+ *add(ALU_p alu)
+ *add two registers A, B
+ *return result to register R
+ */
 void add(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
 	unsigned opnd2 = (unsigned) alu->B;
@@ -139,6 +143,11 @@ void add(ALU_p alu) {
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
+/**
+ *sub(ALU_p alu)
+ *subtract two registers A, B
+ *return result to register R
+ */
 
 void sub(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
@@ -147,6 +156,11 @@ void sub(ALU_p alu) {
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
+/**
+ *mul(ALU_p alu)
+ *multiple two registers A, B
+ *return result to register R
+ */
 
 void mul(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
@@ -155,6 +169,12 @@ void mul(ALU_p alu) {
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
+
+/**
+ *alu_div(ALU_p alu)
+ *divide two registers A, B
+ *return result to register R
+ */
 void alu_div(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
 	unsigned opnd2 = (unsigned) alu->B;
@@ -162,6 +182,12 @@ void alu_div(ALU_p alu) {
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
+
+/**
+ *alu_and(ALU_p alu)
+ *performs the following operation A and B
+ *
+ */
 void alu_and(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
 	unsigned opnd2 = (unsigned) alu->B;
@@ -256,16 +282,18 @@ int main () {
 	printf("\nEnter value for operand 2 [up to 32768]: ");
 	scanf("%d", &resp);
 	setRegisterValue(rf, op2, (Register) resp);
-	printf("Enter the number of the operation\n");
+	printf("\nEnter the number of the operation\n");
 	printf("0 ADD, 1 SUB, 2 MUL, 3 DIV, 4 AND, 5 OR, 6 NOT, 7 XOR, 8 SHL, 9 SHR: ");
 	scanf("%d", &sel);
 	printf("\n");
 	alu_p->A = getRegisterValue(rf, op1);
 	alu_p->B = getRegisterValue(rf, op2);
 	performOperation (alu_p, sel);
+    printf("Registers in ALU:\n");
 	printf("Register A = 0x%04X\n", alu_p->A);
 	printf("Register B = 0x%04X\n", alu_p->B);
 	printf("Register R = 0x%04X\n", alu_p->R);
+    printf("\n");
 	setRegisterValue(rf, dest, alu_p->R);
 	printRegisterFile(rf);
 
