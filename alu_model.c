@@ -258,6 +258,40 @@ void alu_shr(ALU_p alu) {
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
 
+/**
+* printAllOperation(ALU_p alu_p)
+* perform all of the operation available and print the result as a register (value not saved in register)
+*/
+void printAllOperation(ALU_p alu_p) {
+	printf("\nResults of all operations\n");
+
+	int i;
+    for(i=0;i<10;i++)
+    {
+        performOperation (alu_p, i);
+        switch (i) {
+            case 0: {printf("ADD\n"); break;}
+            case 1: {printf("SUB\n"); break;}
+            case 2: {printf("MUL\n"); break;}
+            case 3: {printf("DIV\n"); break;}
+            case 4: {printf("AND\n"); break;}
+            case 5: {printf("OR\n"); break;}
+            case 6: {printf("NOT\n"); break;}
+            case 7: {printf("XOR\n"); break;}
+            case 8: {printf("SHL\n"); break;}
+            case 9: {printf("SHR\n"); break;}
+
+
+        }
+
+        printf("Registers in ALU:\n");
+        printf("Register A = 0x%04X\n", alu_p->A);
+        printf("Register B = 0x%04X\n", alu_p->B);
+        printf("Register R = 0x%04X\n", alu_p->R);
+        printf("\n");
+    }
+}
+
 
 int main () {
 	int dest, op1, op2, sel;			// register addresses
@@ -265,7 +299,6 @@ int main () {
 	RegisterFile_p rf = createRegisterFile();
 
 	clearRegisterFile(rf);
-	
 	
 	ALU_p alu_p = createALU();
 	
@@ -290,33 +323,16 @@ int main () {
 	alu_p->B = getRegisterValue(rf, op2);
     performOperation (alu_p, sel);
 	setRegisterValue(rf, dest, alu_p->R);
+
+	printf("Registers in ALU:\n");
+    printf("Register A = 0x%04X\n", alu_p->A);
+    printf("Register B = 0x%04X\n", alu_p->B);
+    printf("Register R = 0x%04X\n", alu_p->R);
+    printf("\n");
+
 	printRegisterFile(rf);
-    
-    printf("\nResults of all operations\n");
-    for(int i=0;i<10;i++)
-    {
-        performOperation (alu_p, i);
-        switch (i) {
-            case 0: {printf("ADD\n"); break;}
-            case 1: {printf("SUB\n"); break;}
-            case 2: {printf("MUL\n"); break;}
-            case 3: {printf("DIV\n"); break;}
-            case 4: {printf("AND\n"); break;}
-            case 5: {printf("OR\n"); break;}
-            case 6: {printf("NOT\n"); break;}
-            case 7: {printf("XOR\n"); break;}
-            case 8: {printf("SHL\n"); break;}
-            case 9: {printf("SHR\n"); break;}
 
-
-        }
-
-        printf("Registers in ALU:\n");
-        printf("Register A = 0x%04X\n", alu_p->A);
-        printf("Register B = 0x%04X\n", alu_p->B);
-        printf("Register R = 0x%04X\n", alu_p->R);
-        printf("\n");
-    }
+	printAllOperation(alu_p);
 
 	getchar();
 }
