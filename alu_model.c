@@ -74,7 +74,7 @@ void performOperation (ALU_p alu, int op) {
 		case DIV: {alu_div(alu); break;}
 		case AND: {alu_and(alu); break;}
 		case OR: {alu_or(alu); break;}
-		case NOT: {alu_not(alu); break}
+		case NOT: {alu_not(alu); break;}
 		case XOR: {alu_xor(alu); break;}
 		case SHL: {alu_shl(alu); break;}
 		case SHR: {alu_shr(alu); break;}
@@ -153,9 +153,8 @@ void alu_or(ALU_p alu) {
 * performs the following operation ~alu->A
 * return the result
 */
-void alu_not(ALU_p) {
+void alu_not(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
-	unsigned opnd2 = (unsigned) alu->B;
 	unsigned result = ~(unsigned) opnd1;
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
@@ -166,7 +165,7 @@ void alu_not(ALU_p) {
 * performs the following operation alu->A ^ alu->B
 * return the result
 */
-void alu_xor(ALU_p) {
+void alu_xor(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
 	unsigned opnd2 = (unsigned) alu->B;
 	unsigned result = (unsigned) opnd1 ^ (unsigned) opnd2;
@@ -179,9 +178,9 @@ void alu_xor(ALU_p) {
 * performs the following operation alu->A <<< 16
 * return the result
 */
-void alu_shl(ALU_P) {
+void alu_shl(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
-	unsigned result = (unsigned) opnd1 <<< 16;
+	unsigned result = (unsigned) opnd1 << 16;
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
@@ -191,9 +190,9 @@ void alu_shl(ALU_P) {
 * performs the following operation alu->A >>> 16
 * return the result
 */
-void alu_shr(ALU_p) {
+void alu_shr(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
-	unsigned result = (unsigned) opnd1 >>> 16;
+	unsigned result = (unsigned) opnd1 >> 16;
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
