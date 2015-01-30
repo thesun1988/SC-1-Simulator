@@ -16,14 +16,18 @@ void putUnsignedValue (Register_p r, int v);	// sets the value in register r to 
 
 // Register file ADT
 #define REGISTER_FILE_SIZE 8
-#define R0 0;
-#define R1 1;
-#define R2 2;
-#define R3 3;
-#define R4 4;
-#define R5 5;
-#define R6 6;
-#define R7 7;
+#define R0 0
+#define R1 1
+#define R2 2
+#define R3 3
+#define R4 4
+#define R5 5
+#define R6 6
+#define R7 7
+
+typedef struct registerFile {
+	Register r0,r1,r2,r3,r4,r5,r6,r7;
+} RegisterFile;
 
 typedef Register RegisterFile[REGISTER_FILE_SIZE];
 typedef RegisterFile * RegisterFile_p;

@@ -17,7 +17,7 @@
  The main() test driver also shows how data conversions from unsigned to signed work.
  */
 
-// Register methods
+//Register method
 Register_p createRegister (void) {
 	Register_p r = (Register_p) malloc (sizeof(Register));
 	return r;
@@ -28,19 +28,7 @@ int getSignedValue (Register_p r) {
 }
 
 void putUnsignedValue (Register_p r, int v) {
-	*r = (unsigned short) v & 0x00FF;
-}
-
-// RegisterFile Methods
-
-RegisterFile_p createRegisterFile (void) {
-	RegisterFile_p rf = (RegisterFile_p) malloc (sizeof (RegisterFile));
-	return rf;
-}
-
-Register getContentRegister (RegisterFile_p rf, int which) {
-	Register r = *rf[which];
-	return r;
+	*r = (unsigned short) v & 0x00FF; 
 }
 
 // RegisterFile Methods
@@ -82,6 +70,13 @@ Register getRegisterValue (RegisterFile_p rf, int which) {
 	}
 	return r;
 }
+
+void printRegisterFile (RegisterFile_p rf) {
+	int i;
+	for (i=0; i<REGISTER_FILE_SIZE; i++) printf("register R%d content: %04X\n", i, 
+		getRegisterValue(rf, i));
+}
+
 
 
 // ALU methods
