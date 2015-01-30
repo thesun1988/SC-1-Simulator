@@ -70,9 +70,9 @@ void performOperation (ALU_p alu, int op) {
 		case ADD: {add(alu); break;}
 		case SUB: {sub(alu); break;}
 		case MUL: {mul(alu); break;}
-		case DIV: {div(alu); break;}
-		case AND: {andop(alu); break;}
-		case OR:
+		case DIV: {alu_div(alu); break;}
+		case AND: {alu_and(alu); break;}
+		case OR: {alu_or(alu); break;}
 		case NOT:
 		case XOR:
 		case SHL:
@@ -119,17 +119,25 @@ void mul(ALU_p alu) {
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
-void div(ALU_p alu) {
+void alu_div(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
 	unsigned opnd2 = (unsigned) alu->B;
 	unsigned result = (unsigned) opnd1 / (unsigned) opnd2;	// divivde two integers to check overflow, etc.
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
-void andop(ALU_p alu) {
+void alu_and(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
 	unsigned opnd2 = (unsigned) alu->B;
 	unsigned result = (unsigned) opnd1 & (unsigned) opnd2;	// and operation two integers to check overflow, etc.
+	setALU_Flags(alu, result);
+	alu->R = result & LOW_ORDER_WORD_MASK;
+}
+
+void alu_or(ALU_p alu) {
+	unsigned opnd1 = (unsigned) alu->A;
+	unsigned opnd2 = (unsigned) alu->B;
+	unsigned result = (unsigned) opnd1 | (unsigned) opnd2;	// and operation two integers to check overflow, etc.
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
