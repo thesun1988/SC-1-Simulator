@@ -43,6 +43,46 @@ Register getContentRegister (RegisterFile_p rf, int which) {
 	return r;
 }
 
+// RegisterFile Methods
+
+RegisterFile_p createRegisterFile (void) {
+	RegisterFile_p rf = (RegisterFile_p) malloc (sizeof (RegisterFile));
+	return rf;		// actually a pointer to a register - the first one
+}
+
+void clearRegisterFile (RegisterFile_p rf) {
+	int i;
+	for (i=0; i<REGISTER_FILE_SIZE; i++) setRegisterValue(rf, i, (Register) 0x0);	// clear registers
+}
+
+void setRegisterValue (RegisterFile_p rf, int which, Register value) {
+		switch (which) {
+		case R0: {rf->r0 = value; break;}
+		case R1: {rf->r1 = value; break;}
+		case R2: {rf->r2 = value; break;}
+		case R3: {rf->r3 = value; break;}
+		case R4: {rf->r4 = value; break;}
+		case R5: {rf->r5 = value; break;}
+		case R6: {rf->r6 = value; break;}
+		case R7: {rf->r7 = value; break;}
+	}
+}
+
+Register getRegisterValue (RegisterFile_p rf, int which) {
+	Register r;
+	switch (which) {
+		case R0: {r = rf->r0; break;}
+		case R1: {r = rf->r1; break;}
+		case R2: {r = rf->r2; break;}
+		case R3: {r = rf->r3; break;}
+		case R4: {r = rf->r4; break;}
+		case R5: {r = rf->r5; break;}
+		case R6: {r = rf->r6; break;}
+		case R7: {r = rf->r7; break;}
+	}
+	return r;
+}
+
 
 // ALU methods
 
@@ -203,30 +243,38 @@ int main () {
 	
 	RegisterFile_p rf = createRegisterFile();
 	int i;
-	for (i=0; i<REGISTER_FILE_SIZE; i++) *rf[i] = 0x0;	// clear registers
+
+	clearRegisterFile(rf);
+	
+	
 	ALU_p alu_p = createALU();
 	
+	int resp;
 	printf("Enter destination register number: ");
 	scanf("%d", &dest);
 	printf("\nEnter operand1 register number: ");
 	scanf("%d", &op1);
 	printf("\nEnter value for operand 1 [up to 32768]: ");
-	scanf("%d", rf[op1]);
+	scanf("%d", &resp);
+	setRegisterValue(rf, op1, (Register) resp);
 	printf("\nEnter operand2 register number: ");
 	scanf("%d", &op2);
 	printf("\nEnter value for operand 2 [up to 32768]: ");
-	scanf("%d", rf[op2]);
+	scanf("%d", &resp);
+	setRegisterValue(rf, op2, (Register) resp);
 	printf("Enter the number of the operation\n");
-	printf("0 ADD, 1 SUB, 2 MUL, 3 DIV, 4 AND, 5 OR, 6 NOT, 7 XOR, 8 SHL, 9 SHR: "); //picks operation
+	printf("0 ADD, 1 SUB, 2 MUL, 3 DIV, 4 AND, 5 OR, 6 NOT, 7 XOR, 8 SHL, 9 SHR: ");
 	scanf("%d", &sel);
 	printf("\n");
-	alu_p->A = *rf[op1];
-	//printf("Register R%d contains value: 0x%04X\n", op1, getContentRegister (rf, op1));
-	alu_p->B = *rf[op2];
+	alu_p->A = getRegisterValue(rf, op1);
+	alu_p->B = getRegisterValue(rf, op2);
 	performOperation (alu_p, sel);
 	printf("Register A = 0x%04X\n", alu_p->A);
 	printf("Register B = 0x%04X\n", alu_p->B);
 	printf("Register R = 0x%04X\n", alu_p->R);
+	setRegisterValue(rf, dest, alu_p->R);
+	printRegisterFile(rf);
+
 	getchar();
 }
 
