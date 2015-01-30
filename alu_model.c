@@ -57,7 +57,7 @@ void clearRegisterFile (RegisterFile_p rf) {
 }
 
 Register getRegisterValue (RegisterFile_p rf, int which) {
-	Register r;
+	Register r = 0;
 	switch (which) {
 		case R0: {r = rf->r0; break;}
 		case R1: {r = rf->r1; break;}
@@ -288,14 +288,35 @@ int main () {
 	printf("\n");
 	alu_p->A = getRegisterValue(rf, op1);
 	alu_p->B = getRegisterValue(rf, op2);
-	performOperation (alu_p, sel);
-    printf("Registers in ALU:\n");
-	printf("Register A = 0x%04X\n", alu_p->A);
-	printf("Register B = 0x%04X\n", alu_p->B);
-	printf("Register R = 0x%04X\n", alu_p->R);
-    printf("\n");
+    performOperation (alu_p, sel);
 	setRegisterValue(rf, dest, alu_p->R);
 	printRegisterFile(rf);
+    
+    printf("\nResults of all operations\n");
+    for(int i=0;i<10;i++)
+    {
+        performOperation (alu_p, i);
+        switch (i) {
+            case 0: {printf("ADD\n"); break;}
+            case 1: {printf("SUB\n"); break;}
+            case 2: {printf("MUL\n"); break;}
+            case 3: {printf("DIV\n"); break;}
+            case 4: {printf("AND\n"); break;}
+            case 5: {printf("OR\n"); break;}
+            case 6: {printf("NOT\n"); break;}
+            case 7: {printf("XOR\n"); break;}
+            case 8: {printf("SHL\n"); break;}
+            case 9: {printf("SHR\n"); break;}
+
+
+        }
+
+        printf("Registers in ALU:\n");
+        printf("Register A = 0x%04X\n", alu_p->A);
+        printf("Register B = 0x%04X\n", alu_p->B);
+        printf("Register R = 0x%04X\n", alu_p->R);
+        printf("\n");
+    }
 
 	getchar();
 }
