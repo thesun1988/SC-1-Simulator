@@ -38,11 +38,6 @@ RegisterFile_p createRegisterFile (void) {
 	return rf;		// actually a pointer to a register - the first one
 }
 
-void clearRegisterFile (RegisterFile_p rf) {
-	int i;
-	for (i=0; i<REGISTER_FILE_SIZE; i++) setRegisterValue(rf, i, (Register) 0x0);	// clear registers
-}
-
 void setRegisterValue (RegisterFile_p rf, int which, Register value) {
 		switch (which) {
 		case R0: {rf->r0 = value; break;}
@@ -54,6 +49,11 @@ void setRegisterValue (RegisterFile_p rf, int which, Register value) {
 		case R6: {rf->r6 = value; break;}
 		case R7: {rf->r7 = value; break;}
 	}
+}
+
+void clearRegisterFile (RegisterFile_p rf) {
+	int i;
+	for (i=0; i<REGISTER_FILE_SIZE; i++) setRegisterValue(rf, i, (Register) 0x0);	// clear registers
 }
 
 Register getRegisterValue (RegisterFile_p rf, int which) {
