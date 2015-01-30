@@ -74,10 +74,10 @@ void performOperation (ALU_p alu, int op) {
 		case DIV: {alu_div(alu); break;}
 		case AND: {alu_and(alu); break;}
 		case OR: {alu_or(alu); break;}
-		case NOT:
-		case XOR:
-		case SHL:
-		case SHR:
+		case NOT: {alu_not(alu); break}
+		case XOR: {alu_xor(alu); break;}
+		case SHL: {alu_shl(alu); break;}
+		case SHR: {alu_shr(alu); break;}
 		default: return;	// set machine exception
 	}
     
@@ -135,7 +135,6 @@ void alu_and(ALU_p alu) {
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
 
-<<<<<<< HEAD
 /**
 * alu_or(ALU_p alu)
 * performs the following operation alu->A | alu->B
@@ -195,12 +194,6 @@ void alu_shl(ALU_P) {
 void alu_shr(ALU_p) {
 	unsigned opnd1 = (unsigned) alu->A;
 	unsigned result = (unsigned) opnd1 >>> 16;
-=======
-void alu_or(ALU_p alu) {
-	unsigned opnd1 = (unsigned) alu->A;
-	unsigned opnd2 = (unsigned) alu->B;
-	unsigned result = (unsigned) opnd1 | (unsigned) opnd2;	// and operation two integers to check overflow, etc.
->>>>>>> origin/master
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
