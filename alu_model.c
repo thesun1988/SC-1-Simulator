@@ -236,12 +236,12 @@ void alu_xor(ALU_p alu) {
 
 /**
 * alu_shl(ALU_p alu)
-* performs the following operation alu->A <<< 16
+* performs the following operation alu->A <<< 7
 * return the result
 */
 void alu_shl(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
-	unsigned result = (unsigned) opnd1 << 16;
+	unsigned result = (unsigned) opnd1 << 7;
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
@@ -253,7 +253,7 @@ void alu_shl(ALU_p alu) {
 */
 void alu_shr(ALU_p alu) {
 	unsigned opnd1 = (unsigned) alu->A;
-	unsigned result = (unsigned) opnd1 >> 16;
+	unsigned result = (unsigned) opnd1 >> 7;
 	setALU_Flags(alu, result);
 	alu->R = result & LOW_ORDER_WORD_MASK;
 }
@@ -332,7 +332,7 @@ int main () {
 
 	printRegisterFile(rf);
 
-	printAllOperation(alu_p);
+	//printAllOperation(alu_p);
 
 	getchar();
 }
